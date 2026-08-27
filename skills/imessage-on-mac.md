@@ -41,14 +41,15 @@ Personal / own products only. No MKM or work accounts.
 Before every `imsg send`, show a Grok Bot **question widget**. Do not send on a prose "looks good?".
 
 - Prompt as a natural question, e.g. "Send this to Alex?"
-- Options: primary **Send** (value like "Yes, send it"), danger **Don't send**. If several drafts or recipients are in play, `multiSelect: true` for which bubbles/people.
+- **Single-select**: primary **Send** (value like "Yes, send it"), danger **Don't send**.
+- If several drafts or recipients are in play, use `allowCustom: true` so they can name which bubble/person (client `multiSelect` currently submits on first tap — do not rely on it).
 - Show the exact text and who it goes to in the prompt or option description.
 - Sending the widget **ends the turn**. Wait for their pick. Only then run `imsg send`.
 - Never auto-send.
 
 ## Quiet triage (optional)
 
-If a life-admin teammate exists (e.g. Keeper), they can own a quiet iMessage watch. Otherwise the installing agent may:
+If a life-admin teammate exists, they can own a quiet iMessage watch. Otherwise the installing agent may:
 
 - Quiet watch via `imsg chats` / `history` / `search` on the user's Mac
 - Cadence: morning briefing and/or a coarse weekday daytime check — not constant polling
@@ -64,9 +65,9 @@ imsg history --chat-id <id> --limit 50 --json
 imsg history --chat-id <id> --limit 20 --attachments --json
 imsg search "<query>" --json
 imsg watch --chat-id <id> --json
-imsg send --to "+44..." --text "..." --service auto
-imsg send --to "07..." --text "..." --region GB --service auto
-imsg whois "+44..."
+imsg send --to "<E.164>" --text "..." --service auto
+imsg send --to "<local-number>" --text "..." --region <ISO2> --service auto
+imsg whois "<E.164>"
 imsg account
 ```
 
@@ -81,7 +82,7 @@ imsg account
 imsg delete-message --chat "<chat_guid>" --message "<message_guid>" --json
 ```
 
-Examples of chat guids: `SMS;-;Onelink`, `SMS;-;NHS login`, `iMessage;-;+44...`.
+Examples of chat guids: `SMS;-;<sender-label>`, `iMessage;-;<E.164>`.
 
 - Delete **only** the OTP message(s) you used (or that are stale because you requested a newer code).
 - Do **not** delete whole chats (`chat-delete`) for OTP cleanup.

@@ -19,11 +19,21 @@ An iMessage pack for Grok Bot:
 
 This pack has **no npm CLI**. Grok Bot has npm, not pnpm. Do not invent or install a CLI for this pack.
 
-Do **not** create a new teammate. Keeper (or another existing life-admin agent) already owns quiet iMessage triage if they have one.
+Do **not** create a new teammate.
 
 ## Steps
 
-### 1. Mac gate — user's computer, not yours
+### 1. Fetch (do not clone a working tree unless they asked)
+
+Read this raw file (jsDelivr or GitHub raw is fine):
+
+- https://cdn.jsdelivr.net/gh/steve228uk/grok-bot-imessage@main/skills/imessage-on-mac.md
+
+If a skill with id `imessage-on-mac` already exists, overwrite it with the fetched body.
+
+Save the skill with Grok Bot skill-write using id `imessage-on-mac`, the `name` and `description` from the YAML frontmatter, and the markdown body.
+
+### 2. Mac gate — user's computer, not yours
 
 Grok Bot's own computer is Linux. `imsg` belongs on the **user's Mac**, not here.
 
@@ -33,18 +43,8 @@ On the **user's computer**, run via ExternalShell (or equivalent):
 uname -s
 ```
 
-- If the result is **not** `Darwin`, **stop**. Tell them this pack only works on macOS. They must open this Grok Bot chat **on their Mac** (Cursor, Terminal, or the Grok Bot Mac app) and paste the install command there. Do not install Homebrew or `imsg` on Grok Bot's Linux box.
+- If the result is **not** `Darwin`, **stop**. Tell them this pack only works when Grok Bot **local execution** is on a Mac. Point them to [Local execution](grokbot://app/v1/settings?id=local-execution) and ask them to open this chat on their Mac, then paste the install command again. Never install Homebrew or `imsg` on Grok Bot's Linux box.
 - If `Darwin`, continue.
-
-### 2. Fetch (do not clone a working tree unless they asked)
-
-Read this raw file (jsDelivr or GitHub raw is fine):
-
-- https://cdn.jsdelivr.net/gh/steve228uk/grok-bot-imessage@main/skills/imessage-on-mac.md
-
-If a skill with id `imessage-on-mac` already exists, overwrite it with the fetched body.
-
-Save the skill with Grok Bot skill-write using id `imessage-on-mac`, the `name` and `description` from the YAML frontmatter, and the markdown body.
 
 ### 3. `imsg` CLI — widget, then stop
 
@@ -60,9 +60,9 @@ If `imsg` works, skip the widget and say it is already there. Remind them about 
 
 If `imsg` is missing or not working, send a Grok Bot question widget (**this ends the turn**). Do not install until they answer.
 
-- `prompt`: "Install imsg on your Mac? It lets me read and send iMessage/SMS with your confirm-before-send. Skip if you only want OTP paste-in-chat for now."
+- `prompt`: "Install imsg on this Mac so I can read and send iMessage?"
 - Options:
-  - `{ "label": "Install imsg", "value": "Install imsg on my Mac", "style": "primary" }`
+  - `{ "label": "Install imsg", "value": "Install imsg on this Mac", "style": "primary" }`
   - `{ "label": "Skip", "value": "Don't install imsg" }`
 
 If they picked Install imsg, on the **user's Mac** (ExternalShell):
@@ -82,6 +82,7 @@ On the user's Mac, `imsg` needs:
 
 - **Full Disk Access** for the process that runs `imsg` (Terminal / Cursor / Grok Bot) so it can read `~/Library/Messages/chat.db`
 - **Automation** for Messages.app if sending or deleting messages
+- SMS relay: iPhone Text Message Forwarding to this Mac
 
 If `imsg chats --limit 1` fails with a permission error, explain FDA (and Automation if send/delete will be used), then retry after they grant it.
 
@@ -93,15 +94,20 @@ Tell them:
 - Whether `imsg` is working on their Mac (or that they skipped / need FDA).
 - Outbound messages always need a **confirm-before-send** widget — you never auto-send.
 - For OTPs: you prefer reading from iMessage; if `imsg` is missing or FDA is denied, they can paste the code in chat.
-- Quiet triage stays with an existing teammate (e.g. Keeper) if they have one; you did not create a new agent.
+
+Do not run a real send during install.
 
 ## Guardrails
 
 - Never install `imsg` or Homebrew on Grok Bot's own Linux computer.
-- Never auto-install `imsg`. Widget first; skip is fine.
+- Never auto-install `imsg` or Homebrew. Widget first; skip is fine.
 - Never `CreateAgent` during install.
 - Never clone the repo unless they asked for a working tree.
 - Never auto-send iMessage. Confirm-before-send widget every time.
+- Never run a real send during install.
+- Never disable SIP or use `imsg launch` injection.
 - OTP fallback: if `imsg` is missing or FDA denied, ask them to paste the code. Do not block a live login.
 - Grok Bot has npm, not pnpm. This pack has no npm CLI — do not invent one.
 - Personal / own products only. No MKM or work accounts.
+
+Docs: https://imsg.sh · https://github.com/openclaw/imsg

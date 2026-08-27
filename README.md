@@ -2,7 +2,7 @@
 
 iMessage/SMS skill for Grok Bot on the **user's Mac** via [`imsg`](https://imsg.sh). Read history, handle OTPs, and send messages — always with a **confirm-before-send** widget. Never auto-send.
 
-Mac-only. Grok Bot must run this install chat on the user's Mac (not on Grok Bot's Linux computer).
+Mac-only. Grok Bot **local execution** must be on the user's Mac (not on Grok Bot's Linux computer).
 
 ## Install
 
@@ -13,7 +13,7 @@ Install Grok Bot iMessage from https://github.com/steve228uk/grok-bot-imessage
 Follow INSTALL.md.
 ```
 
-Grok Bot will check you are on macOS, fetch and save the skill, optionally ask to install `imsg` via Homebrew on **your Mac**, and remind you about Full Disk Access. It will not create a new teammate or install anything on Grok Bot's own machine.
+Grok Bot will fetch and save the skill, check you are on macOS, optionally ask to install `imsg` via Homebrew on **your Mac**, and remind you about Full Disk Access. It will not create a new teammate or install anything on Grok Bot's own machine.
 
 If `imsg` is missing or permissions are denied, you can still paste OTP codes in chat — installs do not block live logins.
 
@@ -27,9 +27,11 @@ If `imsg` is missing or permissions are denied, you can still paste OTP codes in
 ## Requirements (user's Mac)
 
 - macOS with Messages.app signed in
+- Grok Bot local execution on this Mac
 - Optional: `imsg` — `brew install steipete/tap/imsg` (usually `/opt/homebrew/bin/imsg` or `/usr/local/bin/imsg`)
 - **Full Disk Access** for the app that runs `imsg` (to read `~/Library/Messages/chat.db`)
 - **Automation** for Messages.app if sending or deleting
+- SMS relay: iPhone Text Message Forwarding to this Mac
 
 Docs: https://imsg.sh · Repo: https://github.com/openclaw/imsg
 
@@ -38,4 +40,4 @@ Docs: https://imsg.sh · Repo: https://github.com/openclaw/imsg
 - All `imsg` commands run on the **user's Mac** via ExternalShell — not on Grok Bot's Linux box
 - **Confirm-before-send** widget before every outbound message (primary Send, danger Don't send)
 - OTPs: prefer iMessage; paste-in-chat fallback; delete the OTP message after use (not if pasted)
-- Quiet triage: an existing teammate (e.g. Keeper) may own it; this pack does not add one
+- No new teammate — an existing life-admin agent may own quiet triage if you have one
